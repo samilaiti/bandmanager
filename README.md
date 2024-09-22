@@ -28,5 +28,5 @@ Sovelluksen aihepiirissä on huomattava määrä erilaisia laajennusmahdollisuuk
 
 Sovellusta voi testata lokaalisti. Repositorio sisältää testaamista varten vaadittavat kirjastot tiedostossa "requirements.txt" ja sen lisäksi repositoriossa on PostgreSQL -tietokantataulujen muodostusta varten "schema.sql" tiedoston.
 
-Seuraavaksi tarkoituksena on lisätä vielä puuttuvat määritellyt ominaisuudet ja parannella toiminnallisuutta ja ulkoasua.
+Seuraavaksi tarkoituksena on lisätä vielä puuttuvat määritellyt ominaisuudet ja parannella toiminnallisuutta ja ulkoasua. Tällä hetkellä funktiot ovat app -tiedostossa ja sovelluksen rakennetta on syytä selkeyttää eri toiminnallisuuksiin.
 
