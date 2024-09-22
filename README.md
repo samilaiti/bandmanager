@@ -20,13 +20,20 @@ Sovelluksen aihepiirissä on huomattava määrä erilaisia laajennusmahdollisuuk
 
 **Sovelluksen tila 22.9.2024:**
 - Käyttäjä voi kirjautua sisään ja luoda uuden tunnuksen
+- Käyttäjä voi luoda uuden bändin
+- Käyttäjä voi luoda biisin
 - Käyttäjä voi listata menneet keikat ja tulevat keikat
 - Käyttäjä voi luoda uuden keikan. Sen lisäksi käyttäjä voi lisätä keikkaan, joko jo olemassa olevan keikkapaikan tai luoda uuden keikkapaikan
 - Keikkojen osalta käyttäjä voi nähdä keikkojen aikataulut ja keikkapaikan tiedot
 - Käyttäjä voi listata keikkojen biisilistat
 - Käyttäjä voi luoda uudelle keikalle biisilistan
 
-Sovellusta voi testata lokaalisti. Repositorio sisältää testaamista varten vaadittavat kirjastot tiedostossa "requirements.txt" ja sen lisäksi repositoriossa on PostgreSQL -tietokantataulujen muodostusta varten "schema.sql" tiedoston.
+Sovellusta voi testata lokaalisti. Repositorio sisältää testaamista varten vaadittavat kirjastot tiedostossa "requirements.txt" ja sen lisäksi repositoriossa on PostgreSQL -tietokantataulujen muodostusta varten "schema.sql" tiedoston. Testaaminen tulee aloittaa seuraavasti:
+- Luo uusi käyttäjä
+- Luo uusi bändi
+- Luo uusia biisejä (tällä hetkellä sovelluksessa biiseistä puuttuu id bändiin, joka tullaan päivittämään)
+- Luo uusi keikka ja keikkapaikka
+- Luo keikalle settilista
 
 Seuraavaksi tarkoituksena on lisätä vielä puuttuvat määritellyt ominaisuudet ja parannella toiminnallisuutta ja ulkoasua. Tällä hetkellä funktiot ovat app -tiedostossa ja sovelluksen rakennetta on syytä selkeyttää eri toiminnallisuuksiin.
 
