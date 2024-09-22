@@ -31,19 +31,19 @@ Sovelluksen aihepiirissä on huomattava määrä erilaisia laajennusmahdollisuuk
 Sovellusta voi testata lokaalisti. Repositorio sisältää testaamista varten vaadittavat kirjastot tiedostossa "requirements.txt" ja sen lisäksi repositoriossa on PostgreSQL -tietokantataulujen muodostusta varten "schema.sql" tiedoston.
 
 Kloonaa tämä repositorio omalle koneellesi ja siirry sen juurikansioon. Luo kansioon .env-tiedosto ja määritä sen sisältö seuraavanlaiseksi:
-DATABASE_URL=<tietokannan-paikallinen-osoite>
-SECRET_KEY=<salainen-avain>
+DATABASE_URL=\<tietokannan-paikallinen-osoite\>
+SECRET_KEY=\<salainen-avain\>
 
 Seuraavaksi aktivoi virtuaaliympäristö ja asenna sovelluksen riippuvuudet komennoilla
-$ python3 -m venv venv
-$ source venv/bin/activate
-$ pip install -r ./requirements.txt
+python3 -m venv venv
+source venv/bin/activate
+pip install -r ./requirements.txt
 
 Määritä vielä tietokannan skeema komennolla
-$ psql < schema.sql
+psql < schema.sql
 
 Nyt voit käynnistää sovelluksen komennolla
-$ flask run
+flask run
 
 Testaaminen tulee aloittaa seuraavasti:
 - Luo uusi käyttäjä
