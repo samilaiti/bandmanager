@@ -79,6 +79,20 @@ def addband():
         db.session.commit()
         return redirect("/")
 
+@app.route("/addsong", methods=["GET", "POST"])
+def addsong():
+    if request.method == "GET":
+        return render_template("addsong.html")
+    
+    if request.method == "POST":
+        name = request.form["name"]
+        sql = text(""" INSERT INTO songs (name) 
+                   VALUES (:name) RETURNING id """)
+        song_id = db.session.execute(sql, {"name":name}).fetchone()[0]
+        db.session.commit()
+        return redirect("/")
+
+
 @app.route("/show/<int:id>")
 def show(id):
     sql = text("SELECT id, name, date, venue_id FROM shows WHERE id=:id")
