@@ -66,6 +66,19 @@ def band(id):
     shows = result.fetchall()
     return render_template("band.html", band=band, shows=shows)
 
+@app.route("/addband", methods=["GET", "POST"])
+def addband():
+    if request.method == "GET":
+        return render_template("addband.html")
+    
+    if request.method == "POST":
+        name = request.form["name"]
+        sql = text(""" INSERT INTO bands (name) 
+                   VALUES (:name) RETURNING id """)
+        band_id = db.session.execute(sql, {"name":name}).fetchone()[0]
+        db.session.commit()
+        return redirect("/")
+
 @app.route("/show/<int:id>")
 def show(id):
     sql = text("SELECT id, name, date, venue_id FROM shows WHERE id=:id")

@@ -8,6 +8,8 @@
             {{ band.id }} : <a href="/band/{{ band.id }}">{{ band.name }}</a> <br>
         {% endif %}
     {% endfor %}
+
+    <a href="/addband">Lisää uusi bändi</a>
 <a href="/logout">Kirjaudu ulos</a>
 {% else %}
     <form action="/login" method="POST">
