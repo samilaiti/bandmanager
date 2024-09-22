@@ -80,3 +80,40 @@ def show(id):
     result = db.session.execute(sql, {"show_id":show_id})
     songs = result.fetchall()
     return render_template("show.html", songs=songs, show=show, venue=venue)
+
+@app.route("/addshow/<band_id>", methods=["GET", "POST"])
+def addshow(band_id):
+
+    print(band_id)
+    if request.method == "GET":
+       sql = text("SELECT id, name FROM venues")
+       result = db.session.execute(sql)
+       venues = result.fetchall()
+       return render_template("addshow.html", venues=venues, band_id=band_id)
+    
+    if request.method == "POST":
+        show_name = request.form["name"]
+        show_date = request.form["date"]
+        venue_name = request.form["venue_name"]
+
+        if venue_name == "":
+            venue_id = int(request.form["venues"])
+        else:
+            address = request.form["venue_address"]
+            contact = request.form["venue_contact"]
+            sql = text("""INSERT INTO venues (name, address, contact) 
+                       VALUES (:venue_name, :address, :contact) RETURNING id """)
+            venue_id = db.session.execute(sql, {"venue_name":venue_name, "address":address, "contact":contact}).fetchone()[0]
+        
+        print(show_date)
+        sql = text(""" INSERT INTO shows (name, date, venue_id, band_id) 
+                   VALUES (:show_name, :show_date, :venue_id, :band_id) RETURNING id """)
+        show_id = db.session.execute(sql, {"show_name":show_name, "show_date":show_date, "venue_id":venue_id, "band_id":band_id}).fetchone()[0]
+        db.session.commit()
+
+        return band(band_id)
+
+
+        
+    
+

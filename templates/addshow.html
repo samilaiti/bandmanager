@@ -1,0 +1,22 @@
+<h1>Lisää keikka</h1>
+
+<form action="{{ url_for('addshow', band_id=band_id) }}" method="POST">
+    <p>Nimi:<br>
+    <input type="text" name="name"></p>
+    <p>Päivämäärä:<br>
+    <input type="date" name="date"></p>
+    <p>Keikkapaikka (valitse):<br>
+    <select name="venues" id="venues">
+        {% for venue in venues %}
+            <option value="{{ venue.id }}">{{ venue.name }} </option>
+        {% endfor %}
+    </select></p>
+    Tai lisää keikkapaikka:
+    <p>Nimi:<br>
+    <input type="text" name="venue_name"></p>
+    <p>Osoite:<br>
+    <input type="text" name="venue_address"></p>
+    <p>Yhteystiedot:<br>
+    <input type="text" name="venue_contact"></p>            
+    <input type="submit" value="Lisää keikka">
+</form>
