@@ -55,5 +55,14 @@ def register():
         db.session.commit()
         return redirect("/")
 
-    
+@app.route("/band/<int:id>")
+def band(id):
+    sql = text("SELECT id, name FROM bands WHERE id=:id")
+    result = db.session.execute(sql, {"id":id})
+    band = result.fetchone()
+    band_id = band.id
+    sql = text("SELECT id, name, date FROM shows WHERE band_id=:band_id ORDER BY date ASC")
+    result = db.session.execute(sql, {"band_id":band_id})
+    shows = result.fetchall()
+    return render_template("band.html", band=band, shows=shows)
 
