@@ -1,0 +1,9 @@
+<h2>Valitse biisejä settilistaan</h2>
+
+<form action="{{ url_for('create_setlist', show_id=show_id) }}" method="POST">
+    {% for song in songs %}
+        <input type="checkbox" id="{{ song.id }}" name="selected_songs" value="{{ song.name }}">
+        <label for="{{ song.id }}">{{ song.name }}</label><br>
+    {% endfor %}
+    <input type="submit" value="Lisää settilistaan">
+</form>

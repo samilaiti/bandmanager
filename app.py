@@ -113,7 +113,27 @@ def addshow(band_id):
 
         return band(band_id)
 
+@app.route("/create_setlist/<show_id>", methods=["GET", "POST"])
+def create_setlist(show_id):
 
-        
+    if request.method == "GET":
+       sql = text("SELECT id, name FROM songs")
+       result = db.session.execute(sql)
+       songs = result.fetchall()
+       return render_template("create_setlist.html", songs=songs, show_id=show_id)
+    
+    if request.method == "POST":
+        selected_songs = request.form.getlist("selected_songs")
+        for song in selected_songs:
+            sql = text("SELECT id, name FROM songs WHERE name=:name")
+            result = db.session.execute(sql, {"name":song})
+            song_id = result.fetchone()[0]
+            sql = text(""" INSERT INTO setlist (show_id, song_id) 
+                    VALUES (:show_id, :song_id) RETURNING id """)
+            setlist_id = db.session.execute(sql, {"show_id":show_id, "song_id":song_id}).fetchone()[0]
+            db.session.commit()
+
+        return show(show_id)
+
     
 
