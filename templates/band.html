@@ -1,5 +1,6 @@
 <h1>{{ band.name }}</h1>
 
+<h2>Keikat</h2>
 {% for show in shows %}
-    <p>{{ show.name }} : {{ show.date }}</p><br>
+    <p><a href="/show/{{ show.id }}">{{ show.name }}</a> : {{ show.date }}</p><br>
 {% endfor %}

@@ -66,3 +66,17 @@ def band(id):
     shows = result.fetchall()
     return render_template("band.html", band=band, shows=shows)
 
+@app.route("/show/<int:id>")
+def show(id):
+    sql = text("SELECT id, name, date, venue_id FROM shows WHERE id=:id")
+    result = db.session.execute(sql, {"id":id})
+    show = result.fetchone()
+    show_id = show.id
+    venue_id = show.venue_id
+    sql = text("SELECT id, name, address FROM venues WHERE id=:venue_id")
+    result = db.session.execute(sql, {"venue_id":venue_id})
+    venue = result.fetchone()
+    sql = text("SELECT songs.id, songs.name FROM songs, setlist WHERE songs.id = setlist.song_id AND setlist.show_id=:show_id")
+    result = db.session.execute(sql, {"show_id":show_id})
+    songs = result.fetchall()
+    return render_template("show.html", songs=songs, show=show, venue=venue)

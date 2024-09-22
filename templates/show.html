@@ -1,0 +1,10 @@
+
+<h1>{{ show.name }}</h1>
+{{ show.date }}
+<hr>
+<p>{{ venue.name}} , Osoite: {{ venue.address }} </p><br>
+
+<h2>Biisilista</h2>
+{% for song in songs %}
+    <p>{{song.id}} : {{song.name}}</p>
+{% endfor %}
