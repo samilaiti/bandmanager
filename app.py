@@ -79,6 +79,20 @@ def addband():
         db.session.commit()
         return redirect("/")
 
+@app.route("/removeband", methods=["GET", "POST"])
+def removeband():
+    if request.method == "GET":
+        sql = text("SELECT id, name, visible FROM bands")
+        bands = db.session.execute(sql).fetchall()
+        return render_template("removeband.html", bands=bands)
+    
+    if request.method == "POST":
+        id = int(request.form["bands"])
+        sql = text("UPDATE bands SET visible=FALSE WHERE id=:id")
+        db.session.execute(sql, {"id":id})
+        db.session.commit()
+        return redirect("/")
+
 @app.route("/addsong", methods=["GET", "POST"])
 def addsong():
     if request.method == "GET":

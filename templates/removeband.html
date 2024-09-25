@@ -1,0 +1,11 @@
+<h2>Poista bändi</h2>
+<form action="/removeband" method="POST">
+    <select name="bands" id="bands">
+        {% for band in bands %}
+            {% if band.visible %}
+                <option value="{{ band.id }}">{{ band.name }} </option>
+            {% endif %}
+        {% endfor %}
+    </select></p>
+    <input type="submit" value="Poista bändi">
+</form>
