@@ -2,6 +2,7 @@ from flask import session
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.sql import text
 from db import db
+import bands
 
 def login(username, password):
     sql = text("SELECT id, password FROM users WHERE username=:username")
@@ -20,6 +21,8 @@ def login(username, password):
 
 def logout():
     del session["username"]
+    del session["band_id"]
+    del session["band_name"]
 
 def register(username, password):
     hash_value = generate_password_hash(password)
@@ -27,4 +30,10 @@ def register(username, password):
     db.session.execute(sql, {"username":username, "password":hash_value})
     db.session.commit()
     return login(username, password)
+
+def select_band(id):
+    session["band_id"] = id
+    band = bands.get_band(id)
+    session["band_name"] = band.name
+
 

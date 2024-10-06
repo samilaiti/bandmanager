@@ -7,6 +7,12 @@
 {% if session.username %}
     <p>Olet kirjautunut nimellä {{ session.username }}</p>
 
+    {% if session.band_id %}
+        <p>Valittu bändi: {{ session.band_name }} </p>
+    {% else %}
+        <p>Valitse bändi ylävalikosta</p>
+    {% endif %}
+
     {% for band in bands %}
         {% if band.visible %}
             {{ band.id }} : <a href="/band/{{ band.id }}">{{ band.name }}</a> <br>

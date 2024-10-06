@@ -9,12 +9,23 @@ import users
 def index():
     return render_template("index.html", bands=bands.get_all_bands())
 
+@app.route("/select_band", methods=["POST"])
+def select_band():
+    band_id = int(request.form["bands"])
+    users.select_band(band_id)
+    return redirect("/")
+
+
 @app.route("/test")
 def test():
     return render_template("test.html", songs=songs.get_all_songs())
 
-@app.route("/login",methods=["POST"])
+@app.route("/login",methods=["POST", "GET"])
 def login():
+
+    if (request.method == "GET"):
+        return render_template("login.html")
+    
     username = request.form["username"]
     password = request.form["password"]
     user = users.login(username, password)
@@ -105,18 +116,19 @@ def addshow(band_id):
         
         show_id = shows.add_show(band_id, show_name, show_date, venue_id)
 
-        return band(band_id)
+        return redirect("/") #band(band_id)
 
-@app.route("/create_setlist/<show_id>", methods=["GET", "POST"])
-def create_setlist(show_id):
+@app.route("/create_setlist/<band_id>", methods=["GET", "POST"])
+def create_setlist(band_id):
 
     if request.method == "GET":
-       return render_template("create_setlist.html", songs=songs.get_all_songs(), show_id=show_id)
+        # return render_template("test.html", songs=songs.get_all_songs())
+       return render_template("create_setlist.html", shows=shows.get_all_band_shows(int(band_id)), songs=songs.get_all_songs())
     
     if request.method == "POST":
-        selected_songs = request.form.getlist("selected_songs")
-        for selected_song in selected_songs:
-            song = songs.get_song(selected_song)
-            setlist_id = shows.add_song_to_setlist(show_id, song.id)
+        # selected_songs = request.form.getlist("selected_songs")
+        # for selected_song in selected_songs:
+        #     song = songs.get_song(selected_song)
+        #     setlist_id = shows.add_song_to_setlist(show_id, song.id)
 
-        return show(show_id)
+        return show(1)

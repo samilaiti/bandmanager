@@ -8,9 +8,5 @@
     <p><a href="/show/{{ show.id }}">{{ show.name }}</a> : {{ show.date }}</p><br>
 {% endfor %}
 <br>
-<!-- <a href="/addshow?band_id={{ band.id }}">Lisää keikka</a> -->
-<a href="{{ url_for('addshow', band_id=band.id) }}">Lisää keikka</a><br>
-
-<a href="/addsong">Lisää biisi</a><br>
 
 {% endblock %}

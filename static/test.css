@@ -14,7 +14,7 @@ h1{
    width: 200px;
    float: left;
        border: solid 4px black;
-       height:100vh;
+       height:50vh;
  }
  .portlet {
    margin: 0 1em 1em 0;
