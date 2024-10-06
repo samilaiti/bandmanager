@@ -18,22 +18,16 @@ def test():
 def login():
     username = request.form["username"]
     password = request.form["password"]
-    hash_value = generate_password_hash(password)
-    user = users.get_user(username)
+    user = users.login(username, password)
+
     if not user:
-        return render_template("error.html", message="Virheellinen käyttäjätunnus")
-    else:
-        hash_value = user.password
-        if check_password_hash(hash_value, password):
-            session["username"] = username
-        else:
-            return render_template("error.html", message="Virheellinen salasana")
+        return render_template("error.html", message="Virheellinen käyttäjätunnus tai salasana")
 
     return redirect("/")
 
 @app.route("/logout")
 def logout():
-    del session["username"]
+    users.logout()
     return redirect("/")
 
 @app.route("/register", methods=["POST", "GET"])
@@ -44,7 +38,7 @@ def register():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-        users.add_user(username, password)
+        users.register(username, password)
         return redirect("/")
 
 @app.route("/band/<int:id>")
