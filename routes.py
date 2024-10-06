@@ -1,11 +1,10 @@
 from app import app
 from flask import redirect, render_template, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
-from sqlalchemy.sql import text
-from os import getenv
 import bands
 import shows
-import db
+import songs
+import users
 
 @app.route("/")
 def index():
@@ -13,19 +12,14 @@ def index():
 
 @app.route("/test")
 def test():
-    sql = text("SELECT id, name FROM songs")
-    result = db.session.execute(sql)
-    songs = result.fetchall()
-    return render_template("test.html", songs=songs)
+    return render_template("test.html", songs=songs.get_all_songs())
 
 @app.route("/login",methods=["POST"])
 def login():
     username = request.form["username"]
     password = request.form["password"]
     hash_value = generate_password_hash(password)
-    sql = text("SELECT id, password FROM users WHERE username=:username")
-    result = db.session.execute(sql, {"username":username})
-    user = result.fetchone()
+    user = users.get_user(username)
     if not user:
         return render_template("error.html", message="Virheellinen käyttäjätunnus")
     else:
@@ -50,10 +44,7 @@ def register():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-        hash_value = generate_password_hash(password)
-        sql = text("INSERT INTO users (username, password) VALUES (:username, :password)")
-        db.session.execute(sql, {"username":username, "password":hash_value})
-        db.session.commit()
+        users.add_user(username, password)
         return redirect("/")
 
 @app.route("/band/<int:id>")
@@ -89,37 +80,23 @@ def addsong():
     
     if request.method == "POST":
         name = request.form["name"]
-        sql = text(""" INSERT INTO songs (name) 
-                   VALUES (:name) RETURNING id """)
-        song_id = db.session.execute(sql, {"name":name}).fetchone()[0]
-        db.session.commit()
+        song_id = songs.add_song(name)
         return redirect("/")
 
 
 @app.route("/show/<int:id>")
 def show(id):
-    sql = text("SELECT id, name, date, venue_id FROM shows WHERE id=:id")
-    result = db.session.execute(sql, {"id":id})
-    show = result.fetchone()
+    show = shows.get_show(id)
     show_id = show.id
-    venue_id = show.venue_id
-    sql = text("SELECT id, name, address FROM venues WHERE id=:venue_id")
-    result = db.session.execute(sql, {"venue_id":venue_id})
-    venue = result.fetchone()
-    sql = text("SELECT songs.id, songs.name FROM songs, setlist WHERE songs.id = setlist.song_id AND setlist.show_id=:show_id")
-    result = db.session.execute(sql, {"show_id":show_id})
-    songs = result.fetchall()
+    venue = shows.get_venue(show.venue_id)
+    songs = shows.get_setlist(show_id)
     return render_template("show.html", songs=songs, show=show, venue=venue)
 
 @app.route("/addshow/<band_id>", methods=["GET", "POST"])
 def addshow(band_id):
 
-    print(band_id)
     if request.method == "GET":
-       sql = text("SELECT id, name FROM venues")
-       result = db.session.execute(sql)
-       venues = result.fetchall()
-       return render_template("addshow.html", venues=venues, band_id=band_id)
+       return render_template("addshow.html", venues=shows.get_all_venues(), band_id=band_id)
     
     if request.method == "POST":
         show_name = request.form["name"]
@@ -131,15 +108,9 @@ def addshow(band_id):
         else:
             address = request.form["venue_address"]
             contact = request.form["venue_contact"]
-            sql = text("""INSERT INTO venues (name, address, contact) 
-                       VALUES (:venue_name, :address, :contact) RETURNING id """)
-            venue_id = db.session.execute(sql, {"venue_name":venue_name, "address":address, "contact":contact}).fetchone()[0]
+            venue_id = shows.add_venue(venue_name, address, contact)
         
-        print(show_date)
-        sql = text(""" INSERT INTO shows (name, date, venue_id, band_id) 
-                   VALUES (:show_name, :show_date, :venue_id, :band_id) RETURNING id """)
-        show_id = db.session.execute(sql, {"show_name":show_name, "show_date":show_date, "venue_id":venue_id, "band_id":band_id}).fetchone()[0]
-        db.session.commit()
+        show_id = shows.add_show(band_id, show_name, show_date, venue_id)
 
         return band(band_id)
 
@@ -147,20 +118,12 @@ def addshow(band_id):
 def create_setlist(show_id):
 
     if request.method == "GET":
-       sql = text("SELECT id, name FROM songs")
-       result = db.session.execute(sql)
-       songs = result.fetchall()
-       return render_template("create_setlist.html", songs=songs, show_id=show_id)
+       return render_template("create_setlist.html", songs=songs.get_all_songs(), show_id=show_id)
     
     if request.method == "POST":
         selected_songs = request.form.getlist("selected_songs")
-        for song in selected_songs:
-            sql = text("SELECT id, name FROM songs WHERE name=:name")
-            result = db.session.execute(sql, {"name":song})
-            song_id = result.fetchone()[0]
-            sql = text(""" INSERT INTO setlist (show_id, song_id) 
-                    VALUES (:show_id, :song_id) RETURNING id """)
-            setlist_id = db.session.execute(sql, {"show_id":show_id, "song_id":song_id}).fetchone()[0]
-            db.session.commit()
+        for selected_song in selected_songs:
+            song = songs.get_song(selected_song)
+            setlist_id = shows.add_song_to_setlist(show_id, song.id)
 
         return show(show_id)
