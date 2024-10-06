@@ -1,3 +1,6 @@
+{% extends "layout.html" %}
+{% block body %}
+
 <h1>Lisää keikka</h1>
 
 <form action="{{ url_for('addshow', band_id=band_id) }}" method="POST">
@@ -20,3 +23,5 @@
     <input type="text" name="venue_contact"></p>            
     <input type="submit" value="Lisää keikka">
 </form>
+
+{% endblock %}

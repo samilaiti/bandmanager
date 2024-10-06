@@ -1,6 +1,5 @@
 from app import app
-from flask import redirect, render_template, request, session
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask import redirect, render_template, request
 import bands
 import shows
 import songs

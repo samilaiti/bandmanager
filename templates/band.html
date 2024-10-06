@@ -1,3 +1,6 @@
+{% extends "layout.html" %}
+{% block body %}
+
 <h1>{{ band.name }}</h1>
 
 <h2>Keikat</h2>
@@ -9,3 +12,5 @@
 <a href="{{ url_for('addshow', band_id=band.id) }}">Lisää keikka</a><br>
 
 <a href="/addsong">Lisää biisi</a><br>
+
+{% endblock %}

@@ -1,6 +1,11 @@
+{% extends "layout.html" %}
+{% block body %}
+
 <h2>Lisää uusi biisi</h2>
 <form action="/addsong" method="POST">
     <p>Nimi:<br>
     <input type="text" name="name"></p>
     <input type="submit" value="Lisää biisi">
 </form>
+
+{% endblock %}

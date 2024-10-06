@@ -1,3 +1,6 @@
+{% extends "layout.html" %}
+{% block body %}
+
 <h2>Valitse biisejä settilistaan</h2>
 
 <form action="{{ url_for('create_setlist', show_id=show_id) }}" method="POST">
@@ -7,3 +10,5 @@
     {% endfor %}
     <input type="submit" value="Lisää settilistaan">
 </form>
+
+{% endblock %}

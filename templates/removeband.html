@@ -1,3 +1,6 @@
+{% extends "layout.html" %}
+{% block body %}
+
 <h2>Poista bändi</h2>
 <form action="/removeband" method="POST">
     <select name="bands" id="bands">
@@ -9,3 +12,5 @@
     </select></p>
     <input type="submit" value="Poista bändi">
 </form>
+
+{% endblock %}
