@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.sql import text
 from os import getenv
+# from db import db
 
 app = Flask(__name__)
 app.secret_key = getenv("SECRET_KEY")
@@ -16,6 +17,13 @@ def index():
     result = db.session.execute(sql)
     bands = result.fetchall()
     return render_template("index.html", bands=bands)
+
+@app.route("/test")
+def test():
+    sql = text("SELECT id, name FROM songs")
+    result = db.session.execute(sql)
+    songs = result.fetchall()
+    return render_template("test.html", songs=songs)
 
 @app.route("/login",methods=["POST"])
 def login():

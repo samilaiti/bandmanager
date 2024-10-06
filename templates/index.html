@@ -1,3 +1,7 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
 <h1>Bändit</h1>
 <hr>
 {% if session.username %}
@@ -12,6 +16,7 @@
     <a href="/addband">Lisää uusi bändi</a><br>
     <a href="/removeband">Poista bändi</a><br>
     <a href="/logout">Kirjaudu ulos</a>
+    <a href="/test">Test</a>
 
 {% else %}
     <form action="/login" method="POST">
@@ -23,3 +28,5 @@
     </form>
     <a href="/register">Rekisteröidy</a>
 {% endif %}
+
+{% endblock %}
