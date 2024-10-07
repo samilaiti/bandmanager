@@ -18,7 +18,8 @@ Sovelluksessa on peruskäyttäjiä ja ylläpitäjiä, jokainen käyttäjä on pe
 
 Sovelluksen aihepiirissä on huomattava määrä erilaisia laajennusmahdollisuuksia. Keskeistä on, että aktiivisesti keikkaileva ja omaa musiikkia tekevä bändi pystyy hallinoimaan bändin arkea.
 
-**Sovelluksen tila 22.9.2024:**
+**Sovelluksen tila 6.10.2024:**
+- Ulkoasua on päivitetty navigoinnin helpottamiseksi. Sivulle on luotu valikko, jossa on keskeiset toiminnot
 - Käyttäjä voi kirjautua sisään ja luoda uuden tunnuksen
 - Käyttäjä voi luoda uuden bändin
 - Käyttäjä voi luoda biisin
@@ -26,7 +27,7 @@ Sovelluksen aihepiirissä on huomattava määrä erilaisia laajennusmahdollisuuk
 - Käyttäjä voi luoda uuden keikan. Sen lisäksi käyttäjä voi lisätä keikkaan, joko jo olemassa olevan keikkapaikan tai luoda uuden keikkapaikan
 - Keikkojen osalta käyttäjä voi nähdä keikkojen aikataulut ja keikkapaikan tiedot
 - Käyttäjä voi listata keikkojen biisilistat
-- Käyttäjä voi luoda uudelle keikalle biisilistan
+- Käyttäjä voi luoda uudelle keikalle biisilistan. Biisilistan luominen on toteutettu raahamaalla biisejä kaikkien biisien laatikosta keikkasettilaatikkoon. Tässä on vielä jotain virhettä biisin lisäyksessä
 
 Sovellusta voi testata lokaalisti. Repositorio sisältää testaamista varten vaadittavat kirjastot tiedostossa "requirements.txt" ja sen lisäksi repositoriossa on PostgreSQL -tietokantataulujen muodostusta varten "schema.sql" tiedoston.
 

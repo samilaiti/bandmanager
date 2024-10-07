@@ -2,7 +2,9 @@
 {% block body %}
 
 <h2>Valitse keikka</h2>
-<select name="shows" id="shows">
+
+<form action="{{ url_for('create_setlist', band_id=session.band_id) }}" method="POST">
+<select name="selected_shows" id="shows">
     {% for show in shows %}
         <option value="{{ show.id }}">{{ show.name }} </option>
     {% endfor %}
@@ -29,7 +31,7 @@
   width: 120px;
 }
 </style>
-<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="https://code.jquery.com/ui/1.14.0/jquery-ui.js"></script>
 <script>
 $( function() {
@@ -37,7 +39,7 @@ $( function() {
     connectWith: ".connectedSortable"
   }).disableSelection();
 } );
-</script>
+</script> -->
 </head>
 
 <body>
@@ -46,6 +48,7 @@ $( function() {
 <div class="column flex">
     <p>Keikkabiisit</p>
     <ul id="sortable1" class="connectedSortable">
+      <input type="hidden" name="selected_songs">
     </ul>
 </div>
 
@@ -53,10 +56,13 @@ $( function() {
     <p>Kaikki biisit</p>
     <ul id="sortable2" class="connectedSortable">
         {% for song in songs %}
+        <input type="hidden" value="{{ song.name }}" name="list_of_songs">
         <li class="ui-state-default" value="{{ song.id }}">{{ song.name }}</li>
         {% endfor %}
     </ul>
 </div>
+<input type="submit" value="Luo settilista">
+</form>
 </body>
 
 {% endblock %}

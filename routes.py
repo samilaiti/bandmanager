@@ -15,11 +15,6 @@ def select_band():
     users.select_band(band_id)
     return redirect("/")
 
-
-@app.route("/test")
-def test():
-    return render_template("test.html", songs=songs.get_all_songs())
-
 @app.route("/login",methods=["POST", "GET"])
 def login():
 
@@ -122,13 +117,20 @@ def addshow(band_id):
 def create_setlist(band_id):
 
     if request.method == "GET":
-        # return render_template("test.html", songs=songs.get_all_songs())
        return render_template("create_setlist.html", shows=shows.get_all_band_shows(int(band_id)), songs=songs.get_all_songs())
     
     if request.method == "POST":
-        # selected_songs = request.form.getlist("selected_songs")
-        # for selected_song in selected_songs:
-        #     song = songs.get_song(selected_song)
-        #     setlist_id = shows.add_song_to_setlist(show_id, song.id)
+        selected_songs = request.form.getlist("selected_songs")
+        list_of_songs = request.form.getlist("list_of_songs")
+        print(selected_songs)
+        print(list_of_songs)
+        show_id = int(request.form["selected_shows"])
+        for selected_song in selected_songs:
+            song = songs.get_song(selected_song)
+            setlist_id = shows.add_song_to_setlist(show_id, song.id)
 
-        return show(1)
+        return show(show_id)
+    
+@app.route("/allsongs")
+def allsongs():    
+    return render_template("allsongs.html", all_songs=songs.get_all_songs())

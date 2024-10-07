@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block body %}
+
+{% for song in all_songs %}
+    {% if song.visible %}
+        <p>{{ song.name }}</p>
+    {% endif %}
+{% endfor %}
+
+{% endblock %}

@@ -2,7 +2,7 @@ from sqlalchemy.sql import text
 from db import db
 
 def get_all_songs():
-    sql = text("SELECT id, name FROM songs")
+    sql = text("SELECT id, name, visible FROM songs")
     result = db.session.execute(sql)
     songs = result.fetchall()
     return songs
