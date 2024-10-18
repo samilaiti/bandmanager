@@ -1,12 +1,18 @@
 from app import app
-from flask import redirect, render_template, request
+from flask import redirect, render_template, request, session
 import bands
 import shows
 import songs
 import users
+import json
 
 @app.route("/")
 def index():
+    session["bands"] = []
+    all_bands = bands.get_all_bands()
+    for band in all_bands:
+        session["bands"].extend([(band.id, band.name)])
+    print(session["bands"])
     return render_template("index.html", bands=bands.get_all_bands())
 
 @app.route("/select_band", methods=["POST"])
@@ -134,3 +140,12 @@ def create_setlist(band_id):
 @app.route("/allsongs")
 def allsongs():    
     return render_template("allsongs.html", all_songs=songs.get_all_songs())
+
+@app.route("/process", methods=["POST"])
+def process():
+    data = json.loads(request.data)
+    sl = shows.process_setlist(data)
+    print(sl)
+
+    result = "ok"
+    return result

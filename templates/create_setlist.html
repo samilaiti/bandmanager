@@ -31,15 +31,140 @@
   width: 120px;
 }
 </style>
-<!-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="https://code.jquery.com/ui/1.14.0/jquery-ui.js"></script>
 <script>
-$( function() {
-  $( "#sortable1, #sortable2" ).sortable({
-    connectWith: ".connectedSortable"
-  }).disableSelection();
-} );
-</script> -->
+  var lista;
+  function getJSONFromDOMElement(element){
+        if (!element || typeof element !== 'object') {
+            return null;
+        }
+        const json = {};
+        let a = element.nodeType;
+        json.nodeType = a;
+        if(a === 3){
+            let e = element.textContent;
+            if(e && e.trim().length > 0) json.text = e;
+            else return null;
+        }else if (a === 1) {
+            json.nodeName = element.nodeName;
+            let b = element.attributes;
+            if (b && b.length>0) {
+                let attributes = {};
+                for (let i = 0; i < b.length; i++) {
+                    const attribute = b[i];
+                    attributes[attribute.name] = attribute.value;
+                }
+                json.attributes = attributes;
+            }
+            if (json.nodeName === "svg") {
+                json.innerHTML = element.innerHTML;
+            }else{
+                let c = element.childNodes;
+                if (c && c.length>0) {
+                    let childNodes = [];
+                    c.forEach((child)=>{
+                        let r = getJSONFromDOMElement(child);
+                        if(r) childNodes.push(r);
+                    });
+                    json.childNodes = childNodes;
+                }
+            }
+        }else return null;
+        return json;
+    }
+
+  $( function() {
+    $( "#sortable1" ).sortable({
+      connectWith: ".connectedSortable",
+      receive: function(event, ui) {
+        lista = ui.item[0].parentElement;
+        var jsonObject = getJSONFromDOMElement(lista);
+        console.log(lista);
+        console.log(JSON.stringify(jsonObject.childNodes[0]));
+        $.ajax({
+            url: "/process",
+            type: "POST",
+            contentType: "application/json;charset=UTF-8",
+            data: JSON.stringify(jsonObject.childNodes),
+            success: function(response) {
+                console.log("onnistui");
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        })
+      },
+      remove: function(event, ui) {
+        console.log("poisto");
+        var jsonObject = getJSONFromDOMElement(lista);
+        console.log(lista);
+        console.log(JSON.stringify(jsonObject.childNodes[0]));
+        $.ajax({
+            url: "/process",
+            type: "POST",
+            contentType: "application/json;charset=UTF-8",
+            data: JSON.stringify(jsonObject.childNodes),
+            success: function(response) {
+                console.log("onnistui"); // document.getElementById('output').innerHTML = response.result;
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        })
+      },
+      change: function(event, ui) {
+        console.log("muutos");
+        lista = ui.item[0].parentElement; //.childNodes;
+        if (lista != null)
+        {
+          var jsonObject = getJSONFromDOMElement(lista);
+          if (jsonObject.attributes.id == "sortable1")
+          {
+            $.ajax({
+                url: "/process",
+                type: "POST",
+                contentType: "application/json;charset=UTF-8",
+                data: JSON.stringify(jsonObject.childNodes),
+                success: function(response) {
+                    console.log("onnistui");
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            })
+          }
+        }
+      },
+      stop: function(event, ui) {
+        console.log("järjestä");
+        sort_list = ui.item[0].parentElement;
+        if (lista != null)
+        {
+          var jsonObject = getJSONFromDOMElement(sort_list);
+          console.log(JSON.stringify(jsonObject.attributes.id));
+          if (jsonObject.attributes.id == "sortable1")
+          {
+            $.ajax({
+                url: "/process",
+                type: "POST",
+                contentType: "application/json;charset=UTF-8",
+                data: JSON.stringify(jsonObject.childNodes),
+                success: function(response) {
+                    console.log("onnistui");
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            })
+          }
+        }
+      }
+
+    }).disableSelection();
+
+  } );
+</script>
 </head>
 
 <body>
@@ -48,7 +173,6 @@ $( function() {
 <div class="column flex">
     <p>Keikkabiisit</p>
     <ul id="sortable1" class="connectedSortable">
-      <input type="hidden" name="selected_songs">
     </ul>
 </div>
 
@@ -56,7 +180,6 @@ $( function() {
     <p>Kaikki biisit</p>
     <ul id="sortable2" class="connectedSortable">
         {% for song in songs %}
-        <input type="hidden" value="{{ song.name }}" name="list_of_songs">
         <li class="ui-state-default" value="{{ song.id }}">{{ song.name }}</li>
         {% endfor %}
     </ul>

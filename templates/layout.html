@@ -18,8 +18,8 @@
         <form action="/select_band" method="POST">
           <ul class="navbar-nav mr-auto">
             <select name="bands" id="bands">
-              {% for band in bands %}
-                  <option value="{{ band.id }}">{{ band.name }} </option>
+              {% for band in session["bands"] %}
+                  <option value="{{ band[0] }}">{{ band[1] }} </option>
               {% endfor %}
             </select>
             <input type="submit" value="Valitse">
@@ -88,7 +88,5 @@
         }).disableSelection();
       } );
       </script>
-  
-
   </body>
 </html>
