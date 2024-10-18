@@ -19,7 +19,11 @@
           <ul class="navbar-nav mr-auto">
             <select name="bands" id="bands">
               {% for band in session["bands"] %}
+                {% if session.band_name == band[1] %}
+                <option value="{{ band[0] }}" selected>{{ band[1] }} </option>
+                {% else %}
                   <option value="{{ band[0] }}">{{ band[1] }} </option>
+                {% endif %}
               {% endfor %}
             </select>
             <input type="submit" value="Valitse">
