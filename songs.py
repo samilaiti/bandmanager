@@ -26,3 +26,10 @@ def number_of_songs():
     num_of_songs = result.fetchone()[0]
     return num_of_songs
 
+def get_song_like(name):
+    sql = text("SELECT id, name FROM songs WHERE name LIKE :name")
+    result = db.session.execute(sql, {"name":name})
+    song = result.fetchone()
+    return song
+
+
