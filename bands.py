@@ -25,3 +25,10 @@ def remove_band(id):
     db.session.execute(sql, {"id":id})
     db.session.commit()
 
+def number_of_bands():
+    sql = text("SELECT COUNT(*) FROM bands")
+    result = db.session.execute(sql)
+    num_of_bands = result.fetchone()[0]
+    return num_of_bands
+
+

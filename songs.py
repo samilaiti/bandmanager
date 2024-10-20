@@ -20,3 +20,9 @@ def add_song(name):
     db.session.commit()
     return song_id
 
+def number_of_songs():
+    sql = text("SELECT COUNT(*) FROM songs")
+    result = db.session.execute(sql)
+    num_of_songs = result.fetchone()[0]
+    return num_of_songs
+
