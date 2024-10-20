@@ -95,8 +95,15 @@ def addsong():
     if request.method == "POST":
         users.check_csrf()
         name = request.form["name"]
-        song_id = songs.add_song(name)
-        return redirect("/")
+
+        if name == "":
+            return render_template("error.html", message="Biisin nimi ei voi olla tyhjä", message_style="info")
+        
+        try:
+            song_id = songs.add_song(name)
+            return redirect("/")
+        except Exception as error:
+            return render_template("error.html", message=error, message_style="danger")
 
 
 @app.route("/show/<int:id>")
@@ -119,16 +126,26 @@ def addshow(band_id):
         show_date = request.form["date"]
         venue_name = request.form["venue_name"]
 
+        if show_name == "":
+            return render_template("error.html", message="Keikan nimi ei voi olla tyhjä", message_style="info")
+
+        if show_date == "":
+            return render_template("error.html", message="Päivämäärä ei voi olla tyhjä", message_style="info")
+
         if venue_name == "":
             venue_id = int(request.form["venues"])
         else:
             address = request.form["venue_address"]
+
+            if address == "":
+                return render_template("error.html", message="Osoite ei voi olla tyhjä", message_style="info")            
+
             contact = request.form["venue_contact"]
             venue_id = shows.add_venue(venue_name, address, contact)
         
         show_id = shows.add_show(band_id, show_name, show_date, venue_id)
 
-        return redirect("/") #band(band_id)
+        return redirect("/")
 
 @app.route("/create_setlist/<band_id>", methods=["GET", "POST"])
 def create_setlist(band_id):
