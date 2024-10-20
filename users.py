@@ -25,7 +25,6 @@ def logout():
     del session["username"]
     del session["band_id"]
     del session["band_name"]
-    del session["csfr_token"]
 
 def register(username, password):
     hash_value = generate_password_hash(password)

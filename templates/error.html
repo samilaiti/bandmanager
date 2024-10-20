@@ -1,3 +1,17 @@
-{{ message }}
+{% extends "layout.html" %}
 
-<a href="/">Takaisin</a>
+{% block body %}
+
+{% if message_style == "info" %}
+    <div class="alert alert-info" role="alert">
+        {{ message }}
+    </div>
+{% endif %}
+{% if message_style == "danger" %}
+    <div class="alert alert-danger" role="alert">
+        {{ message }}
+    </div>
+{% endif %}
+
+
+{% endblock %}

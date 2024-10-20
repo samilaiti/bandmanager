@@ -66,8 +66,15 @@ def addband():
     if request.method == "POST":
         users.check_csrf()
         name = request.form["name"]
-        band_id = bands.add_band(name)
-        return redirect("/")
+
+        if name == "":
+            return render_template("error.html", message="Bändin nimi ei voi olla tyhjä", message_style="info")
+        
+        try:
+            band_id = bands.add_band(name)
+            return redirect("/")
+        except Exception as error:
+            return render_template("error.html", message=error, message_style="danger")
 
 @app.route("/removeband", methods=["GET", "POST"])
 def removeband():
