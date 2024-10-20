@@ -160,7 +160,7 @@ def addshow(band_id):
 def create_setlist(band_id):
 
     if request.method == "GET":
-       return render_template("create_setlist.html", shows=shows.get_all_band_shows(int(band_id)), songs=songs.get_all_songs())
+       return render_template("create_setlist.html", shows=shows.get_band_shows_with_empty_setlist(int(band_id)), songs=songs.get_all_songs())    
     
     if request.method == "POST":
         users.check_csrf()

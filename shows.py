@@ -9,6 +9,13 @@ def get_all_band_shows(band_id):
     shows = result.fetchall()
     return shows
 
+def get_band_shows_with_empty_setlist(band_id):
+    sql = text("SELECT id, name, date FROM shows WHERE band_id=:band_id AND (id NOT IN (SELECT show_id FROM setlist))")
+    result = db.session.execute(sql, {"band_id":band_id})
+    shows = result.fetchall()
+    return shows
+
+
 def get_show(id):
     sql = text("SELECT id, name, date, venue_id FROM shows WHERE id=:id")
     result = db.session.execute(sql, {"id":id})
