@@ -1,7 +1,7 @@
 from sqlalchemy.sql import text
 from db import db
 
-current_setlist = []
+# current_setlist = []
 
 def get_all_band_shows(band_id):
     sql = text("SELECT id, name, date FROM shows WHERE band_id=:band_id ORDER BY date ASC")
@@ -61,6 +61,7 @@ def add_song_to_setlist(show_id, song_id):
     return setlist_id
 
 def process_setlist(setlist):
+    global current_setlist
     current_setlist = []
     for item in setlist:
         if "value" in item["attributes"].keys():
@@ -68,8 +69,17 @@ def process_setlist(setlist):
             for node in item["childNodes"]:
                 name = node["text"]
             current_setlist.append((id, name))
-                # print(node["text"])
 
     return current_setlist
+
+def save_setlist(show_id):
+    setlist_id = 0
+    print("shows: ", current_setlist)
+    for song in current_setlist:
+        song_id = song[0]
+        print(song_id, song[1])
+        setlist_id = add_song_to_setlist(show_id, song_id)
+    
+    return setlist_id
 
 

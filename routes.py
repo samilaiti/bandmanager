@@ -164,16 +164,11 @@ def create_setlist(band_id):
     
     if request.method == "POST":
         users.check_csrf()
-        selected_songs = request.form.getlist("selected_songs")
-        list_of_songs = request.form.getlist("list_of_songs")
-        print(selected_songs)
-        print(list_of_songs)
         show_id = int(request.form["selected_shows"])
-        for selected_song in selected_songs:
-            song = songs.get_song(selected_song)
-            setlist_id = shows.add_song_to_setlist(show_id, song.id)
+        print("routes:", show_id)
+        shows.save_setlist(show_id)
 
-        return show(show_id)
+        return redirect("/")
     
 @app.route("/allsongs")
 def allsongs():    
