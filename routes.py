@@ -52,8 +52,13 @@ def register():
         users.register(username, password)
         return redirect("/")
 
+@app.route("/band/")
+def band_missing():
+    return render_template("error.html", message="Valitse bändi ylävalikosta", message_style="info")
+
 @app.route("/band/<int:id>")
 def band(id):
+
     band = bands.get_band(id)
     band_shows = shows.get_all_band_shows(band.id)
     return render_template("band.html", band=band, shows=band_shows)
@@ -113,6 +118,10 @@ def show(id):
     venue = shows.get_venue(show.venue_id)
     songs = shows.get_setlist(show_id)
     return render_template("show.html", songs=songs, show=show, venue=venue)
+
+@app.route("/addshow/")
+def band_show_missing():
+    return render_template("error.html", message="Valitse bändi ylävalikosta", message_style="info")
 
 @app.route("/addshow/<band_id>", methods=["GET", "POST"])
 def addshow(band_id):

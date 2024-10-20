@@ -13,17 +13,6 @@
         <p>Valitse bändi ylävalikosta</p>
     {% endif %}
 
-    {% for band in bands %}
-        {% if band.visible %}
-            {{ band.id }} : <a href="/band/{{ band.id }}">{{ band.name }}</a> <br>
-        {% endif %}
-    {% endfor %}
-
-    <a href="/addband">Lisää uusi bändi</a><br>
-    <a href="/removeband">Poista bändi</a><br>
-    <a href="/logout">Kirjaudu ulos</a>
-    <a href="/test">Test</a>
-
 {% else %}
     <form action="/login" method="POST">
     <p>Tunnus:<br>
