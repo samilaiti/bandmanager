@@ -64,6 +64,7 @@ def addband():
         return render_template("addband.html")
     
     if request.method == "POST":
+        users.check_csrf()
         name = request.form["name"]
         band_id = bands.add_band(name)
         return redirect("/")
@@ -74,6 +75,7 @@ def removeband():
         return render_template("removeband.html", bands=bands.get_all_bands())
     
     if request.method == "POST":
+        users.check_csrf()
         id = int(request.form["bands"])
         bands.remove_band(id)
         return redirect("/")
@@ -84,6 +86,7 @@ def addsong():
         return render_template("addsong.html")
     
     if request.method == "POST":
+        users.check_csrf()
         name = request.form["name"]
         song_id = songs.add_song(name)
         return redirect("/")
@@ -104,6 +107,7 @@ def addshow(band_id):
        return render_template("addshow.html", venues=shows.get_all_venues(), band_id=band_id)
     
     if request.method == "POST":
+        users.check_csrf()
         show_name = request.form["name"]
         show_date = request.form["date"]
         venue_name = request.form["venue_name"]
@@ -126,6 +130,7 @@ def create_setlist(band_id):
        return render_template("create_setlist.html", shows=shows.get_all_band_shows(int(band_id)), songs=songs.get_all_songs())
     
     if request.method == "POST":
+        users.check_csrf()
         selected_songs = request.form.getlist("selected_songs")
         list_of_songs = request.form.getlist("list_of_songs")
         print(selected_songs)

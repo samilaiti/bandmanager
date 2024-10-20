@@ -1,13 +1,15 @@
-from flask import session
+from flask import session, abort, request
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.sql import text
 from db import db
+import os
 import bands
 
 def login(username, password):
     sql = text("SELECT id, password FROM users WHERE username=:username")
     result = db.session.execute(sql, {"username":username})
     user = result.fetchone()
+    session["csrf_token"] = os.urandom(16).hex()
     if not user:
         return False
     else:
@@ -23,6 +25,7 @@ def logout():
     del session["username"]
     del session["band_id"]
     del session["band_name"]
+    del session["csfr_token"]
 
 def register(username, password):
     hash_value = generate_password_hash(password)
@@ -36,4 +39,6 @@ def select_band(id):
     band = bands.get_band(id)
     session["band_name"] = band.name
 
-
+def check_csrf():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)

@@ -22,6 +22,7 @@
     <p>Yhteystiedot:<br>
     <input type="text" name="venue_contact"></p>            
     <input type="submit" value="Lisää keikka">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
 
 {% endblock %}
